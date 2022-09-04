@@ -27,100 +27,99 @@ public static class DependencyContainer
         // Add MediatR
         #region MediatR
 
-        // services.AddMediatR
-        //         (typeof(Application.MappingProfile).GetTypeInfo().Assembly);
+        services.AddMediatR
+                (typeof(Application.MappingProfile).GetTypeInfo().Assembly);
 
         #endregion / MediatR
 
         // Add FluentValidation
         #region Fluent Validation
 
-        // services.AddValidatorsFromAssembly
-        //         (assembly: typeof(Application.Commands.User.CreateProfileCommandValidator).Assembly);
+        services.AddValidatorsFromAssembly
+                (assembly: typeof(Application.Users.Commands.CreateUserCommandValidation).Assembly);
 
         #endregion / Fluent Validation
 
         // Add MediatR PipeLine
         #region MediatR PipeLine
 
-        // services.AddTransient
-        //         (typeof(IPipelineBehavior<,>),
-        //          typeof(Application.Behavior.ValidationBehavior<,>));
+        services.AddTransient
+                (typeof(IPipelineBehavior<,>),
+                 typeof(Infrastructure.Mediator.ValidationBehavior<,>));
 
         #endregion / MediatR PipeLine
 
         // Add Auto Mapper
         #region Auto Mapper
 
-        // services.AddAutoMapper
-        //         (profileAssemblyMarkerTypes: typeof(Application.MappingProfile));
+        services.AddAutoMapper
+                (profileAssemblyMarkerTypes: typeof(Application.MappingProfile));
 
         #endregion / Auto Mapper
 
         // Add Unit Of Work
         #region Unit Of Work
 
-        // services.AddTransient<Persistence.IUnitOfWork, Persistence.UnitOfWork>(current =>
-        // {
-        //     string databaseConnectionString =
-        //         configuration
-        //         .GetSection(key: "ConnectionStrings")
-        //         .GetSection(key: "CommandsConnectionString")
-        //         .Value;
+        services.AddTransient<Persistence.IUnitOfWork, Persistence.UnitOfWork>(current =>
+        {
+            string databaseConnectionString =
+                configuration
+                .GetSection(key: "ConnectionStrings")
+                .GetSection(key: "CommandsConnectionString")
+                .Value;
 
-        //     string databaseProviderString =
-        //         configuration
-        //         .GetSection(key: "CommandsDatabaseProvider")
-        //         .Value;
+            string databaseProviderString =
+                configuration
+                .GetSection(key: "CommandsDatabaseProvider")
+                .Value;
 
-        //     Infrastructure.Enumerations.Provider databaseProvider =
-        //         (Infrastructure.Enumerations.Provider)
-        //         System.Convert.ToInt32(databaseProviderString);
+            Infrastructure.Persistence.Enums.Provider databaseProvider =
+                (Infrastructure.Persistence.Enums.Provider)
+                System.Convert.ToInt32(databaseProviderString);
 
-        //     Infrastructure.Options options =
-        //         new Infrastructure.Options
-        //         {
-        //             Provider = databaseProvider,
-        //             ConnectionString = databaseConnectionString,
-        //         };
+            Infrastructure.Persistence.Options options =
+                new Infrastructure.Persistence.Options
+                {
+                    Provider = databaseProvider,
+                    ConnectionString = databaseConnectionString,
+                };
 
-        //     return new Persistence.UnitOfWork(options: options);
-        // });
+            return new Persistence.UnitOfWork(options: options);
+        });
 
         #endregion / Unit Of Work
 
         // Add Query Unit Of Work
         #region Query Unit Of Work
 
-        // services.AddTransient<Persistence.IQueryUnitOfWork, Persistence.QueryUnitOfWork>(current =>
-        // {
-        //     string databaseConnectionString =
-        //         configuration
-        //         .GetSection(key: "ConnectionStrings")
-        //         .GetSection(key: "QueriesConnectionString")
-        //         .Value;
+        services.AddTransient<Persistence.IQueryUnitOfWork, Persistence.QueryUnitOfWork>(current =>
+        {
+            string databaseConnectionString =
+                configuration
+                .GetSection(key: "ConnectionStrings")
+                .GetSection(key: "QueriesConnectionString")
+                .Value;
 
-        //     string databaseProviderString =
-        //         configuration
-        //         .GetSection(key: "QueriesDatabaseProvider")
-        //         .Value;
+            string databaseProviderString =
+                configuration
+                .GetSection(key: "QueriesDatabaseProvider")
+                .Value;
 
-        //     Infrastructure.Enumerations.Provider databaseProvider =
-        //         (Infrastructure.Enumerations.Provider)
-        //         System.Convert.ToInt32(databaseProviderString);
+            Infrastructure.Persistence.Enums.Provider databaseProvider =
+                (Infrastructure.Persistence.Enums.Provider)
+                System.Convert.ToInt32(databaseProviderString);
 
-        //     Infrastructure.Options options =
-        //         new Infrastructure.Options
-        //         {
-        //             Provider = databaseProvider,
-        //             ConnectionString = databaseConnectionString,
-        //         };
+            Infrastructure.Persistence.Options options =
+                new Infrastructure.Persistence.Options
+                {
+                    Provider = databaseProvider,
+                    ConnectionString = databaseConnectionString,
+                };
 
-        //     return new Persistence.QueryUnitOfWork(options: options);
-        // });
+            return new Persistence.QueryUnitOfWork(options: options);
+        });
 
         #endregion / Query Unit Of Work
     }
     #endregion / Configure Services
-
 }
